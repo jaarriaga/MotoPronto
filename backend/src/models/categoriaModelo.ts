@@ -1,31 +1,31 @@
 import pool from '../config/connection';
 
 
-class UsuarioModelo {
+class CategoriaModelo {
 
 
     public async list() {
         const result = await pool.then( async (connection) => {
             return await connection.query(
-                " SELECT u.correoElectronico, u.password, u.idRol "
-                + " FROM usuario u ")  });
+                " SELECT c.* "
+                + " FROM categoria c ")  });
         return result;
     }
 
 
-    public async add(usuario: any) {
+    public async add(categoria: any) {
         const result = await pool.then( async (connection) => {
             return await connection.query(
-                " INSERT INTO usuario SET ? ", [usuario]);
+                " INSERT INTO categoria SET ? ", [categoria]);
         });
         return result;
     }
    
 
 
-    public async update(usuario: any) {
-       const update = "UPDATE usuario SET password='" + usuario.password +
-            "' where correoElectronico='" + usuario.correoElectronico + "'";
+    public async update(categoria: any) {
+       const update = "UPDATE categoria SET nombreCategoria='" + categoria.nombreCategoria +
+            "' where idCategoria='" + categoria.idCategoria + "'";
         console.log("Update  "+ update)
         const result = await pool.then( async (connection) => {
             return await connection.query(update)              
@@ -34,15 +34,15 @@ class UsuarioModelo {
     }
 
 
-    public async delete(correoElectronico: string) {
+    public async delete(idCategoria: number) {
         console.log('Eliminando');
         const result = await pool.then( async (connection) => {
             return await connection.query(
-             "DELETE FROM usuario where correoElectronico= ?", [correoElectronico]
+             "DELETE FROM categoria where idCategoria= ?", [idCategoria]
              );
         });
         return result;
     }
 }
-const model = new UsuarioModelo();
+const model = new CategoriaModelo();
 export default model;
